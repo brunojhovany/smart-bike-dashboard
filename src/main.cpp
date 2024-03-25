@@ -15,6 +15,25 @@
 static const uint16_t screenWidth = 320;
 static const uint16_t screenHeight = 240;
 
+AsyncFsWebServer server(80, LittleFS, "WebServer");
+bool captiveRun = false;
+
+bool startFilesystem()
+{
+  if (LittleFS.begin())
+  {
+    server.printFileList(LittleFS, "/", 1);
+    return true;
+  }
+  else
+  {
+    Serial.println("ERROR on mounting filesystem. It will be formatted!");
+    LittleFS.format();
+    ESP.restart();
+  }
+  return false;
+}
+
 // static const uint16_t relay = 26;
 // static const int pin_boot = 0;
 
@@ -164,18 +183,22 @@ void GPSUpdate(void *pvParameters)
     else
     {
       // print to seria no gps data
+      #ifdef DEBUG
       Serial.println("No GPS data");
+      // print defualt values
+      Serial.println("Odomerter: " + gps->dashboard_config["odometer"].as<String>());
+      Serial.println("Odometer file: " + String(gps->Odometerfile_Path));
+      #endif
       // hide Gps icon
       lv_obj_add_flag(ui_ICN_GPS_Alert, LV_OBJ_FLAG_HIDDEN);
       setSpeed(0, LV_ANIM_ON);
     }
-    vTaskDelay(1000 / portTICK_PERIOD_MS);
   }
 }
 
 static void splashScreen(void *arg)
 {
-  lv_scr_load_anim(ui_Driving, LV_SCR_LOAD_ANIM_MOVE_LEFT, 400, 2000, true);
+  lv_scr_load_anim(ui_Driving, LV_SCR_LOAD_ANIM_MOVE_LEFT, 2200, 3000, true);
 }
 
 Ticker periodicTicker;
@@ -191,6 +214,7 @@ void setup()
   tft.init();           /* TFT init */
   tft.setRotation(3);   /* Landscape orientation, flipped */
   tft.invertDisplay(0); /* Do not invert display */
+  tft.fillScreen(TFT_BLACK); /* Clear screen */
 
   lv_disp_draw_buf_init(&draw_buf, buf, NULL, screenWidth * screenHeight / 10);
 
@@ -205,16 +229,20 @@ void setup()
   lv_disp_drv_register(&disp_drv);
   ui_init(); /*Initialize the user interface*/
 
-  // clean screen with black color
-  lv_obj_t *scr = lv_disp_get_scr_act(NULL);
-
   periodicTicker.attach(1, timeManager);
-
-  gps = new GPS(-6, "/odometer.txt", 44, 43);
+  // setup gps instance and set initial values ---------------------------------
+  gps = new GPS(-6, "/dashboard_config.json", 44, 43);
+  while (!gps->setup_done)
+  {
+    delay(1000);
+    Serial.print(".");
+  }
   // load odometer from gps instance and append km to label
   int odometer = (int)gps->odometer;
   lv_label_set_text(ui_Label_ODO_Number, String(odometer).c_str());
-  xTaskCreate(GPSUpdate, "GPSUpdate", 10000, NULL, 1, NULL);
+  TaskHandle_t GPSUpdateTask;
+  xTaskCreate(GPSUpdate, "GPSUpdate", 10000, NULL, 1, &GPSUpdateTask);
+  // end gps setup ------------------------------------------------------------
 
   // sutup control button for change menu
   // static lv_indev_drv_t indev_drv2;
@@ -236,32 +264,84 @@ void setup()
 
   esp_timer_handle_t splash_timer;
   esp_timer_create(&splashScreenTimerArgs, &splash_timer);
-  esp_timer_start_once(splash_timer, 5000);
+  esp_timer_start_once(splash_timer, 1000);
   // end splash screen timer --------------------------------------------------
-
-  // setup wifi ---------------------------------------------------------------
-  Serial.println("Conectando a la red WiFi");
-  WiFi.begin("STARLINK", "7qwKFGkj7x6H35");
-  while (WiFi.status() != WL_CONNECTED)
+  
+  // setup web server ---------------------------------------------------------
+  startFilesystem();
+  IPAddress myIP = server.startWiFi(15000);
+  if (!myIP)
   {
-    delay(1000);
-    Serial.print(".");
+    Serial.println("\n\nNo WiFi connection, start AP and Captive Portal\n");
+    myIP = WiFi.softAPIP();
+    Serial.print("My IP 1 ");
+    Serial.println(myIP.toString());
+    server.startCaptivePortal("smart bike", "osvaldomb", "/setup");
+    myIP = WiFi.softAPIP();
+    Serial.print("\nMy IP 2 ");
+    Serial.println(myIP.toString());
+    captiveRun = true;
   }
 
+  // Set a custom /setup page title
+  server.setSetupPageTitle("Configuracion del punto de acceso");
+  server.enableFsCodeEditor();
+
   lv_label_set_text(ui_Label_ETA1, WiFi.localIP().toString().c_str());
-  // end wifi setup -----------------------------------------------------------
+  server.on("/dbsetup", HTTP_GET, [](AsyncWebServerRequest *request){
+    request->send(LittleFS, "/index.html", "text/html");
+  });
+  // need to pass the task handle to the lambda function
+  server.on("/dbsetupp", HTTP_POST, [GPSUpdateTask](AsyncWebServerRequest *request){
+    // Manejar el formulario
+    if(request->hasArg("odometer") && request->hasArg("next_service") && request->hasArg("oil_service")){
+      // Obtener los valores del formulario
+      String odometer = request->arg("odometer");
+      String nextService = request->arg("next_service");
+      String oilService = request->arg("oil_service");
 
-  // setup web server ---------------------------------------------------------
-  // AsyncWebServer server(80);
-  // server.on("/", HTTP_GET, [](AsyncWebServerRequest * request) {
-  //   request->send(200, "plain/text", "Server alredy running");
+      // Crear un objeto JSON con los valores del formulario
+      DynamicJsonDocument doc(1024);
+      doc["odometer"] = odometer.toInt();
+      doc["next_service"] = nextService.toInt();
+      doc["oil_service"] = oilService.toInt();
 
-  // });
-  // server.begin();
+      // Abrir el archivo JSON en modo de escritura
+      File file = LittleFS.open("/dashboard_config.json", "w");
+      if(!file){
+        request->send(500, "text/plain", "Error al abrir el archivo JSON");
+        return;
+      }
+
+      // Serializar el objeto JSON y escribirlo en el archivo
+      if(serializeJson(doc, file) == 0){
+        request->send(500, "text/plain", "Error al escribir en el archivo JSON");
+      }
+      
+      vTaskDelete(GPSUpdateTask);
+      // Cerrar el archivo
+      file.close();
+
+      // Enviar respuesta exitosa
+      request->send(200, "text/plain", "Configuración guardada correctamente");
+      delay(1000);
+      ESP.restart();
+    } else {
+      request->send(400, "text/plain", "Parámetros faltantes en el formulario");
+    }
+  });
   // end web server setup -----------------------------------------------------
 
   Serial.println("Motorcycle Dashboard v0.1.0");
   Serial.println("Setup done");
+
+  // Start server
+  server.init();
+  Serial.print(F("Async ESP Web Server started on IP Address: "));
+  Serial.println(myIP);
+  Serial.println(F(
+      "Open /setup page to configure optional parameters.\n"
+      "Open /edit page to view, edit or upload example or your custom webserver source files."));
 }
 
 void loop()

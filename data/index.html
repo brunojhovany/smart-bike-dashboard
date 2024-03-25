@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Config</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        .switch label .lever {
+            background-color: #aa00ff;
+        }
+
+        .switch label input[type=checkbox]:checked+.lever:after {
+            background-color: #aa00ff;
+        }
+
+        .switch label input[type=checkbox]:checked+.lever:after,
+        .switch label input[type=checkbox]:checked+.lever:before {
+            background-color: #ffffff !important;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="purple darken-4">
+        <div class="nav-wrapper">
+            <a href="#!" class="brand-logo">Dashboard Configuration</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <form action="/dbsetupp" method="POST">
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <i class="material-icons prefix">swap_calls</i>
+                    <input name="odometer" id="icon_odometer" type="number" class="validate">
+                    <label for="icon_odometer">Odometer</label>
+                </div>
+                <div class="input-field col s12 m6">
+                    <i class="material-icons prefix">build</i>
+                    <input name="next_service" id="icon_service" type="number" class="validate">
+                    <label for="icon_service">Next service</label>
+                    <div class="switch right-align">
+                        <label>
+                            Off
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                            On
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12 m6">
+                    <i class="material-icons prefix">settings</i>
+                    <input name="oil_service" id="icon_oil_service" type="number" class="validate">
+                    <label for="icon_oil_service">Oil service</label>
+                    <div class="switch right-align">
+                        <label>
+                            Off
+                            <input type="checkbox">
+                            <span class="lever"></span>
+                            On
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <button class="btn waves-effect waves-light purple darken-4" type="submit" name="action">Submit
+                        <i class="material-icons right">send</i>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+
+</html>

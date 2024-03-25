@@ -5,7 +5,8 @@
 
 
 #include <TinyGPS++.h>
-#include <filesystem.h>
+#include <LittleFSHandler.h>
+#include <ArduinoJson.h>
 
 #ifndef GPS_H
 #define GPS_H
@@ -24,11 +25,14 @@ private:
 public:
   TinyGPSPlus gps;
   HardwareSerial neogps;
+  LittleFSHandler filesystemhandler;
   double max_speed = 0;
   double avg_speed = 0;
   float odometer;
   float distance = 0;
   const char *Odometerfile_Path;
+  bool setup_done = false;
+  StaticJsonDocument<200> dashboard_config;
 
   GPS(int UTC_offset, const char *Odometerfile_Path, const int RXD2, const int TXD2);
 
