@@ -31,7 +31,7 @@
     </nav>
 
     <div class="container">
-        <form action="/dbsetupp" method="POST">
+        <form id="dbsetupp" action="/dbsetupp" method="POST">
             <div class="row">
                 <div class="input-field col s12 m6">
                     <i class="material-icons prefix">swap_calls</i>
@@ -45,7 +45,7 @@
                     <div class="switch right-align">
                         <label>
                             Off
-                            <input type="checkbox">
+                            <input id="service_alert" name="service_alert" type="checkbox">
                             <span class="lever"></span>
                             On
                         </label>
@@ -60,7 +60,7 @@
                     <div class="switch right-align">
                         <label>
                             Off
-                            <input type="checkbox">
+                            <input id="oil_alert" name="oil_alert" type="checkbox">
                             <span class="lever"></span>
                             On
                         </label>
@@ -78,6 +78,8 @@
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="index.js"></script>
 </body>
 
 </html>

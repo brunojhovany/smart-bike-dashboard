@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>Guardado Correctamente</title>
+</head>
+
+<body>
+    <div class="container">
+        <h3 class="header">Guardado correctamente</h3>
+        <p>El sistema se reiniciará</p>
+        <div class="div col s8 offset-s2">
+            <div class="progress">
+                <div id="determinate" class="determinate" style="width: 70%"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simular carga con una animación
+        const progressBar = document.getElementById('determinate');
+        let progress = 0;
+
+        async function increaseProgress() {
+            while (progress <= 100) {
+                progressBar.style.width = progress + '%';
+                progress += 10;
+                await new Promise(resolve => setTimeout(resolve, 1000)); // Ajusta el tiempo de espera aquí
+            }
+        }
+
+        increaseProgress().then(() => {
+            window.location.href = '/dbsetup'; // Redirigir a la página de inicio
+        });
+        // convertir la fucnion a una promesa
+
+
+        increaseProgress();
+    </script>
+</body>
+
+</html>

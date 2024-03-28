@@ -8,6 +8,7 @@
 #include "WiFi.h"
 #include <FS.h>
 #include <LittleFS.h>
+#include <models.h>
 
 /*Don't forget to set Sketchbook location in File/Preferencesto the path of your UI project (the parent foder of this INO file)*/
 
@@ -42,7 +43,7 @@ lv_indev_t *button_indev;
 static lv_disp_draw_buf_t draw_buf;
 static lv_color_t buf[screenWidth * screenHeight / 10];
 
-TFT_eSPI tft = TFT_eSPI(screenWidth, screenHeight); /* TFT instance */
+TFT_eSPI tft = TFT_eSPI(screenHeight,screenWidth); /* TFT instance */
 
 // Relays
 #define RELAY1 27
@@ -136,6 +137,11 @@ void setSpeed(int speed, lv_anim_enable_t anim, int max_speed = 0, int avg_speed
   lv_slider_set_value(ui_Slider_Speed, speed, anim);
   lv_label_set_text(ui_Speed_Number_1, String(lv_slider_get_value(ui_Slider_Speed)).c_str());
   lv_label_set_text(ui_Speed_Number_2, String(lv_slider_get_value(ui_Slider_Speed)).c_str());
+  #ifdef DEBUG
+  Serial.println("Speed: " + String(speed));
+  Serial.println("Max Speed: " + String(max_speed));
+  Serial.println("Avg Speed: " + String(avg_speed));
+  #endif
 
   if (max_speed != 0)
   {
@@ -291,6 +297,16 @@ void setup()
   server.on("/dbsetup", HTTP_GET, [](AsyncWebServerRequest *request){
     request->send(LittleFS, "/index.html", "text/html");
   });
+
+  server.on("/dbdata", HTTP_GET, [](AsyncWebServerRequest *request){
+    // load dashboard config file and send it to the client as application/json
+    File file = LittleFS.open("/dashboard_config.json", "r");
+    if(!file){
+      request->send(500, "application/json", F("{\"error\": \"Error al abrir el archivo JSON\"}"));
+      return;
+    }
+    request->send(LittleFS, "/dashboard_config.json", "application/json");
+  });
   // need to pass the task handle to the lambda function
   server.on("/dbsetupp", HTTP_POST, [GPSUpdateTask](AsyncWebServerRequest *request){
     // Manejar el formulario
@@ -299,12 +315,33 @@ void setup()
       String odometer = request->arg("odometer");
       String nextService = request->arg("next_service");
       String oilService = request->arg("oil_service");
+      String oilAlert = request->arg("oil_alert");
+      String serviceAlert = request->arg("service_alert");
+      bool oilAlertBool = false;
+      bool serviceAlertBool = false;
+      if (oilAlert == "true")
+      {
+        oilAlertBool = true;
+      }
+      if (serviceAlert == "true")
+      {
+        serviceAlertBool = true;
+      }
 
-      // Crear un objeto JSON con los valores del formulario
-      DynamicJsonDocument doc(1024);
-      doc["odometer"] = odometer.toInt();
-      doc["next_service"] = nextService.toInt();
-      doc["oil_service"] = oilService.toInt();
+      // from models namespace dashboard_config struct
+      models::dashboard_config dashboardConfig(odometer.toFloat(), nextService.toInt(), oilService.toInt(), oilAlertBool, serviceAlertBool);
+      // Crear un objeto JSON
+      DynamicJsonDocument json_value = dashboardConfig.toJson();
+      #ifdef DEBUG == 1
+      Serial.println("raw values:");
+      Serial.println("Odometer: " + odometer);
+      Serial.println("Next Service: " + nextService);
+      Serial.println("Oil Service: " + oilService);
+      Serial.println("Oil Alert: " + oilAlert);
+      Serial.println("Service Alert: " + serviceAlert);
+      Serial.println("JSON:");
+      serializeJsonPretty(json_value, Serial);
+      #endif
 
       // Abrir el archivo JSON en modo de escritura
       File file = LittleFS.open("/dashboard_config.json", "w");
@@ -314,7 +351,7 @@ void setup()
       }
 
       // Serializar el objeto JSON y escribirlo en el archivo
-      if(serializeJson(doc, file) == 0){
+      if(serializeJson(json_value, file) == 0){
         request->send(500, "text/plain", "Error al escribir en el archivo JSON");
       }
       
@@ -323,7 +360,7 @@ void setup()
       file.close();
 
       // Enviar respuesta exitosa
-      request->send(200, "text/plain", "Configuración guardada correctamente");
+      request->send(LittleFS, "/success.html", "text/html");
       delay(1000);
       ESP.restart();
     } else {

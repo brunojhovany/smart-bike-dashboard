@@ -194,7 +194,14 @@ void GPS::getTime(String &time, String &am_pm)
   if (hour > 11)
   {
     am_pm = "PM";
-    time = String(hour - 12) + ":" + String(minute);
+    if (hour == 12)
+    {
+      time = String(hour) + ":" + String(minute);
+    }
+    else
+    {
+      time = String(hour - 12) + ":" + String(minute);
+    }
   }
   else
   {
