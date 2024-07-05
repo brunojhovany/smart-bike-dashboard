@@ -57,16 +57,23 @@ extern lv_obj_t * ui_Label_Time;
 extern lv_obj_t * ui_Labe_AM_PM;
 extern lv_obj_t * ui_Label_Temp;
 extern lv_obj_t * ui_Label_Celsius;
-extern lv_obj_t * ui_ICN_Tmp_Alert;
+extern lv_obj_t * ui_ICN_Oil_Alert;
 extern lv_obj_t * ui_ICN_GPS_Alert;
+extern lv_obj_t * ui_ICN_Service_Alert;
 extern lv_obj_t * ui_Group_Footer;
 extern lv_obj_t * ui_Button_Group;
 extern lv_obj_t * ui_BTN_Driving;
+void ui_event_BTN_BGDriving(lv_event_t * e);
+extern lv_obj_t * ui_BTN_BGDriving;
 extern lv_obj_t * ui_ICN_Driving;
 extern lv_obj_t * ui_BTN_Service;
+void ui_event_BTN_BGService(lv_event_t * e);
+extern lv_obj_t * ui_BTN_BGService;
 extern lv_obj_t * ui_ICN_Chck_Ngn;
-extern lv_obj_t * ui_BTN_Lock;
-extern lv_obj_t * ui_ICN_Lock;
+extern lv_obj_t * ui_BTN_Notifications;
+void ui_event_BTN_BGAlert(lv_event_t * e);
+extern lv_obj_t * ui_BTN_BGAlert;
+extern lv_obj_t * ui_ICN_Alert;
 extern lv_obj_t * ui_Group_Driving;
 extern lv_obj_t * ui_Group_Content;
 extern lv_obj_t * ui_Group_ODO;
@@ -86,8 +93,6 @@ extern lv_obj_t * ui_Label_AVG_Speed;
 extern lv_obj_t * ui_Label_AVG_Speed_Number;
 extern lv_obj_t * ui_Label_kmh3;
 extern lv_obj_t * ui_Group_ETA;
-void ui_event_BTN_BG4(lv_event_t * e);
-extern lv_obj_t * ui_BTN_BG4;
 extern lv_obj_t * ui_Label_ETA;
 extern lv_obj_t * ui_Label_ETA1;
 extern lv_obj_t * ui_Group_Time;
@@ -105,45 +110,92 @@ extern lv_obj_t * ui_Group_Service_Alert;
 extern lv_obj_t * ui_ICN_Wrench;
 extern lv_obj_t * ui_Label_Service_Alert;
 extern lv_obj_t * ui_Label_Alert_Service_Number;
+extern lv_obj_t * ui_Label_Alert_Service_KM;
 extern lv_obj_t * ui_Group_Oil_Alert;
 extern lv_obj_t * ui_ICN_Oil;
 extern lv_obj_t * ui_Label_Oil_Alert;
 extern lv_obj_t * ui_Label_Alert_Oil_Number;
+extern lv_obj_t * ui_Label_Alert_Oil__KM;
 extern lv_obj_t * ui_Group_Oil_Alert1;
 extern lv_obj_t * ui_ICN_Oil1;
 extern lv_obj_t * ui_Label_Temp_Alert;
 extern lv_obj_t * ui_Label_Alert_Temp_Number;
-extern lv_obj_t * ui_Group_Notifications;
+extern lv_obj_t * ui_Group_Wheather;
 extern lv_obj_t * ui_Group_Title2;
 extern lv_obj_t * ui_Title_BG2;
 extern lv_obj_t * ui_Notifications;
-extern lv_obj_t * ui_Group_Pin1;
-extern lv_obj_t * ui_Button_Pin1;
-extern lv_obj_t * ui_Label_1;
-extern lv_obj_t * ui_Button_Pin3;
-extern lv_obj_t * ui_Label_3;
-extern lv_obj_t * ui_Button_Pin9;
-extern lv_obj_t * ui_Label_9;
-extern lv_obj_t * ui_Button_PinX;
-extern lv_obj_t * ui_Image_X;
-extern lv_obj_t * ui_Button_PinX1;
-extern lv_obj_t * ui_Image_Ok;
+extern lv_obj_t * ui_Group_weather_info;
+extern lv_obj_t * ui_Group_Service_Alert1;
+extern lv_obj_t * ui_ICN_Weather;
+extern lv_obj_t * ui_Label_Weather_Tmp_Number;
+extern lv_obj_t * ui_Label_Weather_Current_Condition;
+extern lv_obj_t * ui_Label_Weather_unit;
+extern lv_obj_t * ui_Label_Weather_location;
+extern lv_obj_t * ui_Group_Service_Alert2;
+extern lv_obj_t * ui_ICN_Weather1;
+extern lv_obj_t * ui_Label_Weather_Day;
+extern lv_obj_t * ui_Label_Weather_Minimum;
+extern lv_obj_t * ui_Label_Weather_Unit1;
+extern lv_obj_t * ui_Label_Weather_Day_Condition;
+extern lv_obj_t * ui_Group_Service_Alert3;
+extern lv_obj_t * ui_ICN_Weather2;
+extern lv_obj_t * ui_Label_Weather_Maximum;
+extern lv_obj_t * ui_Label_Weather_Night;
+extern lv_obj_t * ui_Label_Weather_Unit2;
+extern lv_obj_t * ui_Label_Weather_Night_Condition;
 extern lv_obj_t * ui____initial_actions0;
 
 LV_IMG_DECLARE(ui_img_bajaj_png);    // assets\bajaj.png
 LV_IMG_DECLARE(ui_img_speed_slider_violet_png);    // assets\speed_slider_violet.png
-LV_IMG_DECLARE(ui_img_temp_alert_off_png);    // assets\temp_alert_off.png
-LV_IMG_DECLARE(ui_img_icon_gps_speed_png);    // assets\icon_gps_speed.png
+LV_IMG_DECLARE(ui_img_oil_alert_on_png);    // assets\oil_alert_on.png
+LV_IMG_DECLARE(ui_img_gps_icon_png);    // assets\gps_icon.png
+LV_IMG_DECLARE(ui_img_service_png);    // assets\service.png
+LV_IMG_DECLARE(ui_img_pin_line_png);    // assets\pin_line.png
 LV_IMG_DECLARE(ui_img_icon_dashboard_png);    // assets\icon_dashboard.png
 LV_IMG_DECLARE(ui_img_checkngin_off_png);    // assets\checkngin_off.png
-LV_IMG_DECLARE(ui_img_notification_off_png);    // assets\notification_off.png
-LV_IMG_DECLARE(ui_img_menu_on_png);    // assets\menu_on.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_8_png);    // assets\weather_icons\weather_icon_8.png
 LV_IMG_DECLARE(ui_img_menu_line_png);    // assets\menu_line.png
-LV_IMG_DECLARE(ui_img_service_png);    // assets\service.png
 LV_IMG_DECLARE(ui_img_oil_alert_off_png);    // assets\oil_alert_off.png
-LV_IMG_DECLARE(ui_img_pin_line_png);    // assets\pin_line.png
-LV_IMG_DECLARE(ui_img_icn_x_png);    // assets\icn_x.png
-LV_IMG_DECLARE(ui_img_icn_ok_png);    // assets\icn_ok.png
+LV_IMG_DECLARE(ui_img_temp_alert_off_png);    // assets\temp_alert_off.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_1_png);    // assets\weather_icons\weather_icon_1.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_15_png);    // assets\weather_icons\weather_icon_15.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_11_png);    // assets\weather_icons\weather_icon_11.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_12_png);    // assets\weather_icons\weather_icon_12.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_13_png);    // assets\weather_icons\weather_icon_13.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_14_png);    // assets\weather_icons\weather_icon_14.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_16_png);    // assets\weather_icons\weather_icon_16.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_17_png);    // assets\weather_icons\weather_icon_17.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_18_png);    // assets\weather_icons\weather_icon_18.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_19_png);    // assets\weather_icons\weather_icon_19.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_2_png);    // assets\weather_icons\weather_icon_2.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_20_png);    // assets\weather_icons\weather_icon_20.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_21_png);    // assets\weather_icons\weather_icon_21.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_22_png);    // assets\weather_icons\weather_icon_22.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_23_png);    // assets\weather_icons\weather_icon_23.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_24_png);    // assets\weather_icons\weather_icon_24.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_25_png);    // assets\weather_icons\weather_icon_25.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_26_png);    // assets\weather_icons\weather_icon_26.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_29_png);    // assets\weather_icons\weather_icon_29.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_3_png);    // assets\weather_icons\weather_icon_3.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_30_png);    // assets\weather_icons\weather_icon_30.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_31_png);    // assets\weather_icons\weather_icon_31.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_32_png);    // assets\weather_icons\weather_icon_32.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_33_png);    // assets\weather_icons\weather_icon_33.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_34_png);    // assets\weather_icons\weather_icon_34.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_35_png);    // assets\weather_icons\weather_icon_35.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_36_png);    // assets\weather_icons\weather_icon_36.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_37_png);    // assets\weather_icons\weather_icon_37.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_38_png);    // assets\weather_icons\weather_icon_38.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_39_png);    // assets\weather_icons\weather_icon_39.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_4_png);    // assets\weather_icons\weather_icon_4.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_40_png);    // assets\weather_icons\weather_icon_40.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_41_png);    // assets\weather_icons\weather_icon_41.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_42_png);    // assets\weather_icons\weather_icon_42.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_43_png);    // assets\weather_icons\weather_icon_43.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_44_png);    // assets\weather_icons\weather_icon_44.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_5_png);    // assets\weather_icons\weather_icon_5.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_6_png);    // assets\weather_icons\weather_icon_6.png
+LV_IMG_DECLARE(ui_img_weather_icons_weather_icon_7_png);    // assets\weather_icons\weather_icon_7.png
 LV_IMG_DECLARE(ui_img_particle_1_png);    // assets\particle_1.png
 LV_IMG_DECLARE(ui_img_particle_2_png);    // assets\particle_2.png
 LV_IMG_DECLARE(ui_img_particle_3_png);    // assets\particle_3.png

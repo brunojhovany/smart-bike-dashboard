@@ -8,6 +8,26 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
+        body {
+            background-color: #212121;
+            color: #ffffff;
+        }
+
+        nav {
+            background-color: #000000;
+        }
+
+        .card {
+            background-color: #424242;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-title, .card-content {
+            color: #ffffff;
+        }
+
         .switch label .lever {
             background-color: #aa00ff;
         }
@@ -20,66 +40,154 @@
         .switch label input[type=checkbox]:checked+.lever:before {
             background-color: #ffffff !important;
         }
+
+        .nav-wrapper {
+            padding: 0 20px;
+        }
+
+        .container {
+            margin-top: 40px;
+        }
+
+        .input-field .prefix ~ input,
+        .input-field .prefix ~ label {
+            margin-left: 3rem;
+        }
+
+        @media (max-width: 600px) {
+            .input-field .prefix {
+                left: 0;
+            }
+
+            .input-field .prefix ~ input,
+            .input-field .prefix ~ label {
+                margin-left: 2.5rem;
+            }
+        }
+
+        .btn-save {
+            background-color: #aa00ff;
+            color: #ffffff;
+        }
+        
+        .brand-logo {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .btn-floating {
+            background-color: #00e676;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+        }
     </style>
 </head>
 
 <body>
-    <nav class="purple darken-4">
+    <nav>
         <div class="nav-wrapper">
-            <a href="#!" class="brand-logo">Dashboard Configuration</a>
+            <a href="#!" class="brand-logo">Dashboard Config</a>
         </div>
     </nav>
 
     <div class="container">
         <form id="dbsetupp" action="/dbsetupp" method="POST">
             <div class="row">
-                <div class="input-field col s12 m6">
-                    <i class="material-icons prefix">swap_calls</i>
-                    <input name="odometer" id="icon_odometer" type="number" class="validate">
-                    <label for="icon_odometer">Odometer</label>
-                </div>
-                <div class="input-field col s12 m6">
-                    <i class="material-icons prefix">build</i>
-                    <input name="next_service" id="icon_service" type="number" class="validate">
-                    <label for="icon_service">Next service</label>
-                    <div class="switch right-align">
-                        <label>
-                            Off
-                            <input id="service_alert" name="service_alert" type="checkbox">
-                            <span class="lever"></span>
-                            On
-                        </label>
+                <div class="col s12 m6 l4">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">Odometer</span>
+                            <div class="input-field">
+                                <i class="material-icons prefix">swap_calls</i>
+                                <input name="odometer" id="icon_odometer" type="number" class="validate">
+                                <label for="icon_odometer">Odometer</label>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12 m6">
-                    <i class="material-icons prefix">settings</i>
-                    <input name="oil_service" id="icon_oil_service" type="number" class="validate">
-                    <label for="icon_oil_service">Oil service</label>
-                    <div class="switch right-align">
-                        <label>
-                            Off
-                            <input id="oil_alert" name="oil_alert" type="checkbox">
-                            <span class="lever"></span>
-                            On
-                        </label>
+                <div class="col s12 m6 l4">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">Next Service</span>
+                            <div class="input-field">
+                                <i class="material-icons prefix">build</i>
+                                <input name="next_service" id="icon_service" type="number" class="validate">
+                                <label for="icon_service">Next Service</label>
+                            </div>
+                            <div class="switch right-align">
+                                <label>
+                                    Off
+                                    <input id="service_alert" name="service_alert" type="checkbox">
+                                    <span class="lever"></span>
+                                    On
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="input-field col s12">
-                    <button class="btn waves-effect waves-light purple darken-4" type="submit" name="action">Submit
-                        <i class="material-icons right">send</i>
-                    </button>
+                <div class="col s12 m6 l4">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title">Oil Service</span>
+                            <div class="input-field">
+                                <i class="material-icons prefix">settings</i>
+                                <input name="oil_service" id="icon_oil_service" type="number" class="validate">
+                                <label for="icon_oil_service">Oil Service</label>
+                            </div>
+                            <div class="switch right-align">
+                                <label>
+                                    Off
+                                    <input id="oil_alert" name="oil_alert" type="checkbox">
+                                    <span class="lever"></span>
+                                    On
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </form>
     </div>
 
+    <a id="btnSave" class="btn-floating btn-large waves-effect waves-light"><i class="material-icons">save</i></a>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="index.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            M.AutoInit();
+            axios.get('/dbdata')
+                .then(response => {
+                    const data = response.data;
+                    document.getElementById('icon_odometer').value = data.odometer;
+                    document.getElementById('icon_service').value = data.next_service;
+                    document.getElementById('icon_oil_service').value = data.oil_service;
+                    document.getElementById('service_alert').checked = data.service_alert;
+                    document.getElementById('oil_alert').checked = data.oil_alert;
+                    M.updateTextFields();  // Actualiza las etiquetas de los campos
+                })
+                .catch(error => {
+                    console.error('Error al cargar los datos:', error);
+                });
+
+            document.getElementById('btnSave').addEventListener('click', function () {
+                const formData = new FormData(document.getElementById('dbsetupp'));
+                formData.set('service_alert', document.getElementById('service_alert').checked);
+                formData.set('oil_alert', document.getElementById('oil_alert').checked);
+
+                axios.post('/dbsetupp', formData)
+                    .then(response => {
+                        M.toast({html: 'Datos guardados correctamente!'});
+                    })
+                    .catch(error => {
+                        console.error('Error al guardar los datos:', error);
+                        M.toast({html: 'Error al guardar los datos!'});
+                    });
+            });
+        });
+    </script>
 </body>
 
 </html>

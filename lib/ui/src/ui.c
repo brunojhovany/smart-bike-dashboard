@@ -42,16 +42,23 @@ lv_obj_t * ui_Label_Time;
 lv_obj_t * ui_Labe_AM_PM;
 lv_obj_t * ui_Label_Temp;
 lv_obj_t * ui_Label_Celsius;
-lv_obj_t * ui_ICN_Tmp_Alert;
+lv_obj_t * ui_ICN_Oil_Alert;
 lv_obj_t * ui_ICN_GPS_Alert;
+lv_obj_t * ui_ICN_Service_Alert;
 lv_obj_t * ui_Group_Footer;
 lv_obj_t * ui_Button_Group;
 lv_obj_t * ui_BTN_Driving;
+void ui_event_BTN_BGDriving(lv_event_t * e);
+lv_obj_t * ui_BTN_BGDriving;
 lv_obj_t * ui_ICN_Driving;
 lv_obj_t * ui_BTN_Service;
+void ui_event_BTN_BGService(lv_event_t * e);
+lv_obj_t * ui_BTN_BGService;
 lv_obj_t * ui_ICN_Chck_Ngn;
-lv_obj_t * ui_BTN_Lock;
-lv_obj_t * ui_ICN_Lock;
+lv_obj_t * ui_BTN_Notifications;
+void ui_event_BTN_BGAlert(lv_event_t * e);
+lv_obj_t * ui_BTN_BGAlert;
+lv_obj_t * ui_ICN_Alert;
 lv_obj_t * ui_Group_Driving;
 lv_obj_t * ui_Group_Content;
 lv_obj_t * ui_Group_ODO;
@@ -71,8 +78,6 @@ lv_obj_t * ui_Label_AVG_Speed;
 lv_obj_t * ui_Label_AVG_Speed_Number;
 lv_obj_t * ui_Label_kmh3;
 lv_obj_t * ui_Group_ETA;
-void ui_event_BTN_BG4(lv_event_t * e);
-lv_obj_t * ui_BTN_BG4;
 lv_obj_t * ui_Label_ETA;
 lv_obj_t * ui_Label_ETA1;
 lv_obj_t * ui_Group_Time;
@@ -90,30 +95,41 @@ lv_obj_t * ui_Group_Service_Alert;
 lv_obj_t * ui_ICN_Wrench;
 lv_obj_t * ui_Label_Service_Alert;
 lv_obj_t * ui_Label_Alert_Service_Number;
+lv_obj_t * ui_Label_Alert_Service_KM;
 lv_obj_t * ui_Group_Oil_Alert;
 lv_obj_t * ui_ICN_Oil;
 lv_obj_t * ui_Label_Oil_Alert;
 lv_obj_t * ui_Label_Alert_Oil_Number;
+lv_obj_t * ui_Label_Alert_Oil__KM;
 lv_obj_t * ui_Group_Oil_Alert1;
 lv_obj_t * ui_ICN_Oil1;
 lv_obj_t * ui_Label_Temp_Alert;
 lv_obj_t * ui_Label_Alert_Temp_Number;
-lv_obj_t * ui_Group_Notifications;
+lv_obj_t * ui_Group_Wheather;
 lv_obj_t * ui_Group_Title2;
 lv_obj_t * ui_Title_BG2;
 lv_obj_t * ui_Notifications;
-lv_obj_t * ui_Group_Pin1;
-lv_obj_t * ui_Button_Pin1;
-lv_obj_t * ui_Label_1;
-lv_obj_t * ui_Button_Pin3;
-lv_obj_t * ui_Label_3;
-lv_obj_t * ui_Button_Pin9;
-lv_obj_t * ui_Label_9;
-lv_obj_t * ui_Button_PinX;
-lv_obj_t * ui_Image_X;
-lv_obj_t * ui_Button_PinX1;
-lv_obj_t * ui_Image_Ok;
+lv_obj_t * ui_Group_weather_info;
+lv_obj_t * ui_Group_Service_Alert1;
+lv_obj_t * ui_ICN_Weather;
+lv_obj_t * ui_Label_Weather_Tmp_Number;
+lv_obj_t * ui_Label_Weather_Current_Condition;
+lv_obj_t * ui_Label_Weather_unit;
+lv_obj_t * ui_Label_Weather_location;
+lv_obj_t * ui_Group_Service_Alert2;
+lv_obj_t * ui_ICN_Weather1;
+lv_obj_t * ui_Label_Weather_Day;
+lv_obj_t * ui_Label_Weather_Minimum;
+lv_obj_t * ui_Label_Weather_Unit1;
+lv_obj_t * ui_Label_Weather_Day_Condition;
+lv_obj_t * ui_Group_Service_Alert3;
+lv_obj_t * ui_ICN_Weather2;
+lv_obj_t * ui_Label_Weather_Maximum;
+lv_obj_t * ui_Label_Weather_Night;
+lv_obj_t * ui_Label_Weather_Unit2;
+lv_obj_t * ui_Label_Weather_Night_Condition;
 lv_obj_t * ui____initial_actions0;
+const lv_img_dsc_t * ui_imgset_weather_icon_[40] = {&ui_img_weather_icons_weather_icon_1_png, &ui_img_weather_icons_weather_icon_11_png, &ui_img_weather_icons_weather_icon_12_png, &ui_img_weather_icons_weather_icon_2_png, &ui_img_weather_icons_weather_icon_13_png, &ui_img_weather_icons_weather_icon_3_png, &ui_img_weather_icons_weather_icon_14_png, &ui_img_weather_icons_weather_icon_4_png, &ui_img_weather_icons_weather_icon_15_png, &ui_img_weather_icons_weather_icon_5_png, &ui_img_weather_icons_weather_icon_16_png, &ui_img_weather_icons_weather_icon_6_png, &ui_img_weather_icons_weather_icon_17_png, &ui_img_weather_icons_weather_icon_7_png, &ui_img_weather_icons_weather_icon_18_png, &ui_img_weather_icons_weather_icon_8_png, &ui_img_weather_icons_weather_icon_19_png, &ui_img_weather_icons_weather_icon_20_png, &ui_img_weather_icons_weather_icon_21_png, &ui_img_weather_icons_weather_icon_22_png, &ui_img_weather_icons_weather_icon_23_png, &ui_img_weather_icons_weather_icon_24_png, &ui_img_weather_icons_weather_icon_25_png, &ui_img_weather_icons_weather_icon_26_png, &ui_img_weather_icons_weather_icon_29_png, &ui_img_weather_icons_weather_icon_30_png, &ui_img_weather_icons_weather_icon_31_png, &ui_img_weather_icons_weather_icon_32_png, &ui_img_weather_icons_weather_icon_33_png, &ui_img_weather_icons_weather_icon_34_png, &ui_img_weather_icons_weather_icon_35_png, &ui_img_weather_icons_weather_icon_36_png, &ui_img_weather_icons_weather_icon_37_png, &ui_img_weather_icons_weather_icon_38_png, &ui_img_weather_icons_weather_icon_39_png, &ui_img_weather_icons_weather_icon_40_png, &ui_img_weather_icons_weather_icon_41_png, &ui_img_weather_icons_weather_icon_42_png, &ui_img_weather_icons_weather_icon_43_png, &ui_img_weather_icons_weather_icon_44_png};
 const lv_img_dsc_t * ui_imgset_particle_[3] = {&ui_img_particle_1_png, &ui_img_particle_2_png, &ui_img_particle_3_png};
 const lv_img_dsc_t * ui_imgset_water_[2] = {&ui_img_water_1_png, &ui_img_water_2_png};
 
@@ -325,18 +341,67 @@ void On_Animation(lv_obj_t * TargetObject, int delay)
 }
 
 ///////////////////// FUNCTIONS ////////////////////
-void ui_event_BTN_BG4(lv_event_t * e)
+void ui_event_BTN_BGDriving(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
     lv_obj_t * target = lv_event_get_target(e);
     if(event_code == LV_EVENT_CLICKED) {
-        _ui_state_modify(ui_BTN_BG4, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
-        On_Animation(ui_Group_Service, 0);
+        _ui_flag_modify(ui_BTN_BGDriving, LV_OBJ_FLAG_CLICKABLE, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_BTN_BGService, LV_OBJ_FLAG_CLICKABLE, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_BTN_BGAlert, LV_OBJ_FLAG_CLICKABLE, _UI_MODIFY_FLAG_ADD);
+    }
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_flag_modify(ui_Group_Wheather, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Group_Service, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Group_Driving, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+    if(event_code == LV_EVENT_CLICKED) {
+        On_Animation(ui_Group_Driving, 0);
+        _ui_state_modify(ui_BTN_BGDriving, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
+        _ui_state_modify(ui_BTN_BGService, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+        _ui_state_modify(ui_BTN_BGAlert, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+    }
+}
+void ui_event_BTN_BGService(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_flag_modify(ui_BTN_BGService, LV_OBJ_FLAG_CLICKABLE, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_BTN_Driving, LV_OBJ_FLAG_CLICKABLE, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_BTN_BGAlert, LV_OBJ_FLAG_CLICKABLE, _UI_MODIFY_FLAG_ADD);
     }
     if(event_code == LV_EVENT_CLICKED) {
         _ui_flag_modify(ui_Group_Driving, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
         _ui_flag_modify(ui_Group_Service, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_Group_Notifications, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Group_Wheather, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+    if(event_code == LV_EVENT_CLICKED) {
+        On_Animation(ui_Group_Service, 0);
+        _ui_state_modify(ui_BTN_BGAlert, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+        _ui_state_modify(ui_BTN_BGService, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
+        _ui_state_modify(ui_BTN_BGDriving, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+    }
+}
+void ui_event_BTN_BGAlert(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+    lv_obj_t * target = lv_event_get_target(e);
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_flag_modify(ui_BTN_BGAlert, LV_OBJ_FLAG_CLICKABLE, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_BTN_BGService, LV_OBJ_FLAG_CLICKABLE, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_BTN_BGDriving, LV_OBJ_FLAG_CLICKABLE, _UI_MODIFY_FLAG_ADD);
+    }
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_flag_modify(ui_Group_Wheather, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_Group_Service, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Group_Driving, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+    if(event_code == LV_EVENT_CLICKED) {
+        On_Animation(ui_Group_Wheather, 0);
+        _ui_state_modify(ui_BTN_BGDriving, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+        _ui_state_modify(ui_BTN_BGService, LV_STATE_CHECKED, _UI_MODIFY_STATE_REMOVE);
+        _ui_state_modify(ui_BTN_BGAlert, LV_STATE_CHECKED, _UI_MODIFY_STATE_ADD);
     }
 }
 
